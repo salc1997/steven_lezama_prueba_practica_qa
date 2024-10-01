@@ -1,6 +1,3 @@
-import dotenv from 'dotenv'
-dotenv.config()
-
 export const convertToFloat = (value: string): number => {
 
     value = value.replace(/[^0-9.]+/g, '');
@@ -33,8 +30,8 @@ export const getRandomInt = (length: number): number => {
 
 export const generateRandomUser = () => {
 
-    const firstNames = ['John', 'Jane', 'Michael', 'Emily', 'David', 'Emma', 'Chris', 'Olivia', 'James', 'Sophia'];
-    const lastNames = ['Smith', 'Johnson', 'Brown', 'Williams', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez'];
+    const firstNames = ['Alexander', 'Sofia', 'Benjamin', 'Mila', 'Henry', 'Chloe', 'Jackson', 'Harper', 'Sebastian', 'Ella'];
+    const lastNames = ['Adams', 'Baker', 'Carter', 'Edwards', 'Fisher', 'Garrett', 'Howard', 'Kennedy', 'Morris', 'Rogers'];
 
     const getRandomNumber = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
     const getRandomElement = (array: string[]) => array[Math.floor(Math.random() * array.length)];
