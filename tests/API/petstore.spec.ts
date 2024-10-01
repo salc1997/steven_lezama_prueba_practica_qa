@@ -1,48 +1,65 @@
-import { test as baseTest, expect } from '@playwright/test';
-import { UserPO } from './page_object/userPO';
-import userData from "../fixtures/testData.json"
+import { test as baseTest, expect } from '../fixtures/pomFixtures';
+import { generateRandomUser } from '../page_object/testUtils'
 
-type UserFixture = {
-    createdUser: any; // Define un tipo para el usuario creado
-};
 
-let userPO: UserPO
 
-const test = baseTest.extend<UserFixture>({
-    createdUser: async ({ request }, use) => {
-        const userPO = new UserPO(request);
-        const loginUser = {
-            username: userData.APIuser.loginUsername,
-            password: userData.APIuser.loginPassword,
-        }
-        /*const newUser = {
-            id: userData.APIuser.id,
-            username: userData.APIuser.username,
-            firstname: userData.APIuser.firstname,
-            lastname: userData.APIuser.lastname,
-            email: userData.APIuser.email,
-            password: userData.APIuser.password,
-            phone: userData.APIuser.phone,
-            userStatus: userData.APIuser.userStatus
-        }*/
+baseTest.describe('This are the positive tests for users', () => {
 
-        //const login = await userPO.login(loginUser);
+    const randomCreateData = generateRandomUser()
+    const randomUpdateData = generateRandomUser()
 
-        const user = await userPO.createUser(loginUser);
-        await use(user);
+    async function searchAndValidateUser(userPO: any, data: any) {
+        const response = await userPO.searchUser(randomCreateData.username);
+        const responseJson = await response.json();
+
+        expect(response.status()).toBe(200);
+        expect(responseJson.id.toString()).toBe(data.id);
+        expect(responseJson.username).toBe(data.username);
+        expect(responseJson.email).toBe(data.email);
+        expect(responseJson.password).toBe(data.password);
+        expect(responseJson.phone).toBe(data.phone);
+        expect(responseJson.userStatus.toString()).toBe(data.userStatus);
     }
-});
 
+    baseTest('This is a test to create a user', async ({ userPO }) => {
 
-test.describe('This are the positive tests for users', () => {
+        const response = await userPO.createUser(randomCreateData);
+        const responseJson = await response.json()
 
+        console.log('test data create: ', randomUpdateData)
 
-
-    test('This is a test to create a user', async ({ createdUser }) => {
-
-        //expect(createdUser.id).toBe(userData.APIuser.id)
-        //console.log('user created from fixture: ', createdUser)
+        expect(responseJson.code).toBe(200)
+        expect(responseJson.type).toBe('unknown')
+        expect(responseJson.message).toBe(randomCreateData.id.toString())
 
     })
-})
 
+    baseTest('This is a test to validate the created user', async ({ userPO }) => {
+
+        await searchAndValidateUser(userPO, randomCreateData)
+
+    })
+
+    baseTest('This is a test to update the user', async ({ userPO }) => {
+
+
+        randomUpdateData.id = randomCreateData.id
+        randomUpdateData.username = randomCreateData.username
+
+        console.log('test data update: ', randomUpdateData)
+
+        const response = await userPO.updateUser(randomCreateData.username, randomUpdateData)
+        const responseJson = await response.json()
+        expect(responseJson.code).toBe(200)
+        expect(responseJson.type).toBe('unknown')
+        expect(responseJson.message).toBe(randomCreateData.id.toString())
+
+    })
+
+    baseTest('This is a test to validate the updated user', async ({ userPO }) => {
+
+        await searchAndValidateUser(userPO, randomUpdateData)
+
+    })
+
+})
