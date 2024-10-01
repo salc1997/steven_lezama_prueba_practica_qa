@@ -1,6 +1,4 @@
 import { test } from '../fixtures/pomFixtures';
-import dotenv from 'dotenv'
-dotenv.config()
 
 test.describe('This is a test to add a producto to the cart', () => {
 
