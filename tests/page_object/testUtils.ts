@@ -1,64 +1,53 @@
-export const convertToFloat = (value: string): number => {
-
-    value = value.replace(/[^0-9.]+/g, '');
-
-    const num: number = parseFloat(parseFloat(value).toFixed(2));
-
-    return num;
-}
-
-export const getTwoRandomNumbers = (range: number): [number, number] => {
-
-    const randomNum1 = getRandomInt(range)
-    let randomNum2 = getRandomInt(range)
-
-    while (randomNum2 == randomNum1) {
-        randomNum2 = getRandomInt(range)
-    }
+import { test as baseTest, expect } from '../fixtures/pomFixtures';
+import { generateRandomUser } from '../page_object/testUtils'
 
 
-    return [randomNum1, randomNum2];
 
-}
+const randomCreateData = generateRandomUser()
+const randomUpdateData = generateRandomUser()
 
-//fuction to get a random number
-export const getRandomInt = (length: number): number => {
+baseTest.describe('This are the test to create and validate an user', () => {
 
-    let number = Math.floor(Math.random() * (length - 1) + 1)
-    return number;
-}
+    baseTest('This is a test to create a user', async ({ userPO }) => {
 
-export const generateRandomUser = () => {
+        const response = await userPO.createUser(randomCreateData);
+        const responseJson = await response.json()
 
-    const firstNames = ['Alexander', 'Sofia', 'Benjamin', 'Mila', 'Henry', 'Chloe', 'Jackson', 'Harper', 'Sebastian', 'Ella'];
-    const lastNames = ['Adams', 'Baker', 'Carter', 'Edwards', 'Fisher', 'Garrett', 'Howard', 'Kennedy', 'Morris', 'Rogers'];
+        expect(responseJson.code).toBe(200)
+        expect(responseJson.type).toBe('unknown')
+        expect(responseJson.message).toBe(randomCreateData.id.toString())
 
-    const getRandomNumber = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
-    const getRandomElement = (array: string[]) => array[Math.floor(Math.random() * array.length)];
-    const getRandomEmail = (name: string, lastname: string) => {
-        const domains = ['example.com', 'mail.com', 'test.com'];
-        return `${name.toLowerCase()}.${lastname.toLowerCase()}@${domains[Math.floor(Math.random() * domains.length)]}`;
-    };
+    })
 
-    const id = getRandomNumber(1000, 9999).toString();
-    const name = getRandomElement(firstNames);
-    const lastname = getRandomElement(lastNames);
-    const username = `${name}.${lastname}`
-    const email = getRandomEmail(name, lastname);
-    const password = Math.random().toString(36).slice(-10);
-    const phone = getRandomNumber(1000000000, 9999999999).toString();
-    const userStatus = getRandomNumber(0, 10).toString();
+    baseTest('This is a test to validate the created user', async ({ userPO }) => {
 
-    const randomData = {
-        id,
-        username,
-        name,
-        lastname,
-        email,
-        password,
-        phone,
-        userStatus
-    };
+        await userPO.searchAndValidateUser(randomCreateData)
 
-    return randomData
-}
+    })
+
+})
+
+baseTest.describe('This are the test to update and validate an user', () => {
+
+
+    baseTest('This is a test to update the user', async ({ userPO }) => {
+
+        randomUpdateData.id = randomCreateData.id
+        randomUpdateData.username = randomCreateData.username
+
+        const response = await userPO.updateUser(randomCreateData.username, randomUpdateData)
+        const responseJson = await response.json()
+        expect(responseJson.code).toBe(200)
+        expect(responseJson.type).toBe('unknown')
+        expect(responseJson.message).toBe(randomCreateData.id.toString())
+
+    })
+
+
+    baseTest('This is a test to validate the updated user', async ({ userPO }) => {
+
+        await userPO.searchAndValidateUser(randomUpdateData)
+
+    })
+
+})
