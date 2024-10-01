@@ -1,6 +1,6 @@
 {
     "url": "https://www.saucedemo.com/v1/index.html",
-    "apiURL": "https://petstore.swagger.io/#/user",
+    "apiURL": "https://petstore.swagger.io/v2",
     "username": "standard_user",
     "password": "secret_sauce",
     "firstName": "Steven",
@@ -9,17 +9,5 @@
     "paymentInfo": "SauceCard #31337",
     "shippingInfo": "FREE PONY EXPRESS DELIVERY!",
     "thanksMessage": "THANK YOU FOR YOUR ORDER",
-    "sentOrderMessage": "Your order has been dispatched, and will arrive just as fast as the pony can get there!",
-    "APIuser": {
-        "loginUsername": "salc1997",
-        "loginPassword": "1234",
-        "id": 1234,
-        "username": "steventest",
-        "firstname": "John",
-        "lastname": "Doe",
-        "email": "john.doe@example.com",
-        "password": "password123",
-        "phone": "+123456789",
-        "userStatus": 0
-    }
+    "sentOrderMessage": "Your order has been dispatched, and will arrive just as fast as the pony can get there!"
 }
