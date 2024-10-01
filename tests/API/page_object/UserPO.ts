@@ -1,65 +1,36 @@
-import { test as baseTest, expect } from '../fixtures/pomFixtures';
-import { generateRandomUser } from '../page_object/testUtils'
+import { APIRequestContext } from "@playwright/test";
+import * as testData from "../../fixtures/testData.json"
+
+export class UserPO {
 
 
-
-baseTest.describe('This are the positive tests for users', () => {
-
-    const randomCreateData = generateRandomUser()
-    const randomUpdateData = generateRandomUser()
-
-    async function searchAndValidateUser(userPO: any, data: any) {
-        const response = await userPO.searchUser(randomCreateData.username);
-        const responseJson = await response.json();
-
-        expect(response.status()).toBe(200);
-        expect(responseJson.id.toString()).toBe(data.id);
-        expect(responseJson.username).toBe(data.username);
-        expect(responseJson.email).toBe(data.email);
-        expect(responseJson.password).toBe(data.password);
-        expect(responseJson.phone).toBe(data.phone);
-        expect(responseJson.userStatus.toString()).toBe(data.userStatus);
+    private readonly request: APIRequestContext
+    baseURL = testData.apiURL
+    constructor(request: APIRequestContext) {
+        this.request = request
     }
 
-    baseTest('This is a test to create a user', async ({ userPO }) => {
+    async createUser(userData) {
 
-        const response = await userPO.createUser(randomCreateData);
-        const responseJson = await response.json()
+        const response = await this.request.post(`${this.baseURL}/user`, {
+            data: userData
+        })
+        return response
+    }
 
-        console.log('test data create: ', randomUpdateData)
+    async updateUser(username, randomData) {
 
-        expect(responseJson.code).toBe(200)
-        expect(responseJson.type).toBe('unknown')
-        expect(responseJson.message).toBe(randomCreateData.id.toString())
+        const response = await this.request.put(`${this.baseURL}/user/${username}`, {
+            data: randomData
+        })
+        return response
+    }
 
-    })
+    async searchUser(username) {
 
-    baseTest('This is a test to validate the created user', async ({ userPO }) => {
+        const response = await this.request.get(`${this.baseURL}/user/${username}`)
 
-        await searchAndValidateUser(userPO, randomCreateData)
+        return response
+    }
 
-    })
-
-    baseTest('This is a test to update the user', async ({ userPO }) => {
-
-
-        randomUpdateData.id = randomCreateData.id
-        randomUpdateData.username = randomCreateData.username
-
-        console.log('test data update: ', randomUpdateData)
-
-        const response = await userPO.updateUser(randomCreateData.username, randomUpdateData)
-        const responseJson = await response.json()
-        expect(responseJson.code).toBe(200)
-        expect(responseJson.type).toBe('unknown')
-        expect(responseJson.message).toBe(randomCreateData.id.toString())
-
-    })
-
-    baseTest('This is a test to validate the updated user', async ({ userPO }) => {
-
-        await searchAndValidateUser(userPO, randomUpdateData)
-
-    })
-
-})
+}
