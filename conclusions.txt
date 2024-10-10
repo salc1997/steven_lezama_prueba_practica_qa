@@ -1,0 +1,69 @@
+These are the conclusion when it comes to the E2E tests performed on the Saucedemo page:
+
+Product Page
+1- The product page seems to be working great and without problems the flux to be able to add a product to the page is not complicated.
+2- There are products that are not being displayed correctly like "Test.allTheThings() T-Shirt (Red)" the "Test.allTheThings()" should be displayed.
+3- it looks like this page is displaying mostly clothing items and accessories, so in my opinion the Bike shouldn't be displayed here.
+4- The selectors are well defined and made it easy for me to identify the elements without problems
+5- As an enhancements I would include the part to include the amount of items of the same type I want to add, I might want to buy 2 shirt of the same type
+but currently there's not option to do that.
+
+In conclusion the process to add a product to the cart is working as expected
+
+Cart
+1- When you hover the mouse over any other button or link the mouse changes it's shape to a hand but when you do this on the shopping cart the icon
+is not changing as in the other examples and as for standardization the change should happen in all cases.
+2- The selectors are well defined and made it easy for me to identify the elements without problems.
+3- All the information is being displayed correctly.
+
+In conclusion the cart page is working as expected only has a small enhancement
+
+Checkout
+1- The selectors are well defined and made it easy for me to identify the elements without problems.
+2- when I enter the information the name of the fields disappear so I can no longer identify if the first fields is the name, last name or the zip
+these fields should have the placeholder with the name of the field.
+
+In conclusion the process to checkout is not working as expected as it has a problem with the fields that could cause some confusion to the end user
+
+
+Checkout Overview
+1- The selectors are well defined and made it easy for me to identify the elements without problems.
+2- On this page should be included the information entered on the previous form (name, last name, zip code) as this is an overview
+3- If I click on the link of the product it will take to the overview of the product, but there's no button to go back to the Checkout: Overview
+4- The calculations of the price, tax and total are working as expected
+
+In conclusion the checkout:overview to the cart is working as expected but there is relevant information that should be included there
+
+Checkout: Complete
+The page of Checkout: Complete is working as expected
+
+As a general conclusion the core flows are solid, but several enhancements are recommended to improve user experience and consistency across pages.
+
+
+These are the conclusion when it comes to the API tests performed on the Pet Store API
+
+
+Create user
+1- I'm able to create the user without problems, but the response is lacking of some important information like returning the same information I entered when creating it that way
+it can be verified directly that is working as expected.
+2-Response is 200
+
+Get user
+1- I should be requested to login to be able to search for an user due to the information is returning on the response like the password.
+2-Response is 200
+
+Update user
+1- The same as in the create the response is lacking of some important information like returning the same information I entered when creating it that way
+it can be verified directly that is working as expected
+2-Response is 200
+
+
+In summary, the user management features are working, but there are a few areas that could be improved to make things smoother and more secure:
+
+Create User: The user gets created without any issues, but the response doesn't include the info that was entered. It would be helpful to return that data so we can easily verify everything went through correctly. The status code (200) is fine.
+
+Get User: Right now, you can search for a user without logging in, which is a problem since sensitive info like passwords is included in the response. There should be a login step before accessing that data. The response code (200) is fine, but the security needs work.
+
+Update User: Like the create user part, the update works, but the response doesn't show the updated info, so it’s hard to confirm the changes right away. The status code (200) is correct.
+
+Overall, everything works, but it could be better with some changes to improve security and make it easier to verify changes.
